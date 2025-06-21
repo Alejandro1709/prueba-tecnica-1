@@ -1,80 +1,24 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useReducer } from 'react'
 import Header from './components/Header'
 import InputActions from './components/InputActions'
-import { v4 as uuidv4 } from 'uuid'
 import TodosList from './components/TodosList'
-import type { Todo } from './types'
-
-const todosFromStorage = (): Todo[] => {
-  const todos = localStorage.getItem('todos')
-  return todos ? JSON.parse(todos) : []
-}
+import { initialState, todoReducer } from './reducers/todo-reducer'
 
 function App() {
-  const [todos, setTodos] = useState<Todo[]>(todosFromStorage())
-
-  const [title, setTitle] = useState<string>('')
+  const [state, dispatch] = useReducer(todoReducer, initialState)
 
   useEffect(() => {
-    localStorage.setItem('todos', JSON.stringify(todos))
-  }, [todos])
-
-  const handleCompleteTodo = (
-    todoId: Todo['id'],
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    let updatedTodos = []
-
-    if (e.target.value == 'off') {
-      updatedTodos = todos.map((t) =>
-        t.id === todoId ? { ...t, completed: true, status: 'completed' } : t
-      )
-    } else {
-      updatedTodos = todos.map((t) =>
-        t.id === todoId ? { ...t, completed: false, status: 'pending' } : t
-      )
-    }
-
-    setTodos(updatedTodos)
-  }
-
-  const handleDeleteTodo = (todoId: Todo['id']) => {
-    const filtered = todos.filter((t) => t.id !== todoId)
-
-    setTodos(filtered)
-  }
-
-  const handleAddTodo = () => {
-    if (!title) return
-
-    const newTodo: Todo = {
-      id: uuidv4(),
-      title,
-      status: 'pending',
-      completed: false,
-    }
-
-    setTodos([...todos, newTodo])
-
-    setTitle('')
-  }
+    localStorage.setItem('todos', JSON.stringify(state.todos))
+  }, [state.todos])
 
   return (
     <>
       <Header />
 
       <main className="max-w-7xl space-y-6 mx-auto p-4">
-        <InputActions
-          title={title}
-          setTitle={setTitle}
-          handleAddTodo={handleAddTodo}
-        />
+        <InputActions title={state.title} dispatch={dispatch} />
 
-        <TodosList
-          todos={todos}
-          handleDeleteTodo={handleDeleteTodo}
-          handleCompleteTodo={handleCompleteTodo}
-        />
+        <TodosList todos={state.todos} dispatch={dispatch} />
       </main>
     </>
   )

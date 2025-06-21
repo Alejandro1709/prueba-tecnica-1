@@ -1,19 +1,13 @@
+import type { Dispatch } from 'react'
 import type { Todo } from '../types'
+import type { TodoActions } from '../reducers/todo-reducer'
 
 type TodoCardProps = {
   todo: Todo
-  handleDeleteTodo: (todoId: Todo['id']) => void
-  handleCompleteTodo: (
-    todoId: Todo['id'],
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => void
+  dispatch: Dispatch<TodoActions>
 }
 
-export default function TodoCard({
-  todo,
-  handleDeleteTodo,
-  handleCompleteTodo,
-}: TodoCardProps) {
+export default function TodoCard({ todo, dispatch }: TodoCardProps) {
   return (
     <div className="relative flex justify-between items-center bg-white shadow-lg border p-4">
       <div
@@ -31,11 +25,15 @@ export default function TodoCard({
           type="checkbox"
           value={todo.completed ? 'on' : 'off'}
           checked={todo.completed}
-          onChange={(e) => handleCompleteTodo(todo.id, e)}
+          onChange={(e) =>
+            dispatch({ type: 'toggle-todo', payload: { id: todo.id, e } })
+          }
         />
         <button
           className="text-red-600 cursor-pointer"
-          onClick={() => handleDeleteTodo(todo.id)}
+          onClick={() =>
+            dispatch({ type: 'delete-todo', payload: { id: todo.id } })
+          }
         >
           Delete
         </button>
