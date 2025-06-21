@@ -1,9 +1,23 @@
 import TodoForm from './TodoForm'
 
-export default function InputActions() {
+type InputActionsProps = {
+  title: string
+  setTitle: React.Dispatch<React.SetStateAction<string>>
+  handleAddTodo: () => void
+}
+
+export default function InputActions({
+  title,
+  setTitle,
+  handleAddTodo,
+}: InputActionsProps) {
   return (
     <div className="flex flex-col gap-2 md:flex-row justify-between">
-      <TodoForm />
+      <TodoForm
+        title={title}
+        setTitle={setTitle}
+        handleAddTodo={handleAddTodo}
+      />
 
       <select className="bg-white border p-2" name="filter" id="filter">
         <option value="">-- Select --</option>
