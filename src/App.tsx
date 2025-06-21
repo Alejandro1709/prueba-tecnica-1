@@ -13,7 +13,7 @@ function App() {
 
   return (
     <>
-      <Header />
+      <Header dispatch={dispatch} />
 
       <main className="max-w-7xl space-y-6 mx-auto p-4">
         <InputActions title={state.title} dispatch={dispatch} />

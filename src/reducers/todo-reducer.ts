@@ -9,6 +9,7 @@ export type TodoActions =
       payload: { id: Todo['id']; e: React.ChangeEvent<HTMLInputElement> }
     }
   | { type: 'delete-todo'; payload: { id: Todo['id'] } }
+  | { type: 'clear-todos' }
 
 export type TodoState = {
   title: string
@@ -80,6 +81,14 @@ export const todoReducer = (
     return {
       ...state,
       todos: filtered,
+    }
+  }
+
+  if (action.type === 'clear-todos') {
+    return {
+      ...state,
+      todos: [],
+      title: '',
     }
   }
   return state
