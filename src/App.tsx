@@ -3,13 +3,37 @@ import Header from './components/Header'
 import InputActions from './components/InputActions'
 import { v4 as uuidv4 } from 'uuid'
 import TodosList from './components/TodosList'
-import { todos as initialTodos } from './data/todos'
 import type { Todo } from './types'
 
 function App() {
-  const [todos, setTodos] = useState<Todo[]>(initialTodos)
+  const [todos, setTodos] = useState<Todo[]>([])
 
   const [title, setTitle] = useState<string>('')
+
+  const handleCompleteTodo = (
+    todoId: Todo['id'],
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    let updatedTodos = []
+
+    if (e.target.value == 'off') {
+      updatedTodos = todos.map((t) =>
+        t.id === todoId ? { ...t, completed: true, status: 'completed' } : t
+      )
+    } else {
+      updatedTodos = todos.map((t) =>
+        t.id === todoId ? { ...t, completed: false, status: 'pending' } : t
+      )
+    }
+
+    setTodos(updatedTodos)
+  }
+
+  const handleDeleteTodo = (todoId: Todo['id']) => {
+    const filtered = todos.filter((t) => t.id !== todoId)
+
+    setTodos(filtered)
+  }
 
   const handleAddTodo = () => {
     if (!title) return
@@ -37,7 +61,11 @@ function App() {
           handleAddTodo={handleAddTodo}
         />
 
-        <TodosList todos={todos} />
+        <TodosList
+          todos={todos}
+          handleDeleteTodo={handleDeleteTodo}
+          handleCompleteTodo={handleCompleteTodo}
+        />
       </main>
     </>
   )
