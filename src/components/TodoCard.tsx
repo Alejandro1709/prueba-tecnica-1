@@ -30,6 +30,7 @@ export default function TodoCard({
         <input
           type="checkbox"
           value={todo.completed ? 'on' : 'off'}
+          checked={todo.completed}
           onChange={(e) => handleCompleteTodo(todo.id, e)}
         />
         <button

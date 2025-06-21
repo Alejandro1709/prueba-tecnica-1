@@ -1,14 +1,23 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Header from './components/Header'
 import InputActions from './components/InputActions'
 import { v4 as uuidv4 } from 'uuid'
 import TodosList from './components/TodosList'
 import type { Todo } from './types'
 
+const todosFromStorage = (): Todo[] => {
+  const todos = localStorage.getItem('todos')
+  return todos ? JSON.parse(todos) : []
+}
+
 function App() {
-  const [todos, setTodos] = useState<Todo[]>([])
+  const [todos, setTodos] = useState<Todo[]>(todosFromStorage())
 
   const [title, setTitle] = useState<string>('')
+
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos))
+  }, [todos])
 
   const handleCompleteTodo = (
     todoId: Todo['id'],
