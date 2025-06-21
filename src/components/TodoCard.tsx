@@ -13,7 +13,10 @@ export default function TodoCard({ todo }: TodoCardProps) {
 
       <h2>{todo.title}</h2>
 
-      <input type="checkbox" checked={todo.completed} />
+      <div className="flex gap-2">
+        <input type="checkbox" />
+        <button className="text-red-600 cursor-pointer">Delete</button>
+      </div>
     </div>
   )
 }
