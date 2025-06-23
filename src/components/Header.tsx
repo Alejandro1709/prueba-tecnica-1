@@ -1,9 +1,8 @@
-import type { TodoActions } from '../reducers/todo-reducer'
+import { useTodo } from '../hooks/useTodo'
 
-type HeaderProps = {
-  dispatch: React.Dispatch<TodoActions>
-}
-export default function Header({ dispatch }: HeaderProps) {
+export default function Header() {
+  const { dispatch } = useTodo()
+
   return (
     <header className="flex justify-center items-center bg-[#011627] h-16 text-white">
       <div className="flex justify-between items-center w-full mx-6">

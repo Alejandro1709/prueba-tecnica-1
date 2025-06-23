@@ -1,20 +1,13 @@
-import type { Dispatch } from 'react'
-import type { Todo } from '../types'
 import TodoCard from './TodoCard'
-import type { TodoActions } from '../reducers/todo-reducer'
+import { useTodo } from '../hooks/useTodo'
 
-type TodosListProps = {
-  todos: Todo[]
-  dispatch: Dispatch<TodoActions>
-}
+export default function TodosList() {
+  const { state } = useTodo()
 
-export default function TodosList({ todos, dispatch }: TodosListProps) {
   return (
     <div className="flex flex-col gap-6">
-      {todos.length > 0 ? (
-        todos.map((todo) => (
-          <TodoCard key={todo.id} todo={todo} dispatch={dispatch} />
-        ))
+      {state.todos.length > 0 ? (
+        state.todos.map((todo) => <TodoCard key={todo.id} todo={todo} />)
       ) : (
         <p>No todos</p>
       )}

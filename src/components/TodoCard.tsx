@@ -1,13 +1,13 @@
-import type { Dispatch } from 'react'
 import type { Todo } from '../types'
-import type { TodoActions } from '../reducers/todo-reducer'
+import { useTodo } from '../hooks/useTodo'
 
 type TodoCardProps = {
   todo: Todo
-  dispatch: Dispatch<TodoActions>
 }
 
-export default function TodoCard({ todo, dispatch }: TodoCardProps) {
+export default function TodoCard({ todo }: TodoCardProps) {
+  const { dispatch } = useTodo()
+
   return (
     <div className="relative flex justify-between items-center bg-white shadow-lg border p-4">
       <div

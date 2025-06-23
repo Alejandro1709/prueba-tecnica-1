@@ -1,11 +1,11 @@
-import { useEffect, useReducer } from 'react'
+import { useEffect } from 'react'
 import Header from './components/Header'
 import InputActions from './components/InputActions'
 import TodosList from './components/TodosList'
-import { initialState, todoReducer } from './reducers/todo-reducer'
+import { useTodo } from './hooks/useTodo'
 
 function App() {
-  const [state, dispatch] = useReducer(todoReducer, initialState)
+  const { state } = useTodo()
 
   useEffect(() => {
     localStorage.setItem('todos', JSON.stringify(state.todos))
@@ -13,12 +13,12 @@ function App() {
 
   return (
     <>
-      <Header dispatch={dispatch} />
+      <Header />
 
       <main className="max-w-7xl space-y-6 mx-auto p-4">
-        <InputActions title={state.title} dispatch={dispatch} />
+        <InputActions />
 
-        <TodosList todos={state.todos} dispatch={dispatch} />
+        <TodosList />
       </main>
     </>
   )

@@ -1,15 +1,12 @@
-import type { TodoActions } from '../reducers/todo-reducer'
+import { useTodo } from '../hooks/useTodo'
 
-type TodoFormProps = {
-  title: string
-  dispatch: React.Dispatch<TodoActions>
-}
+export default function TodoForm() {
+  const { state, dispatch } = useTodo()
 
-export default function TodoForm({ title, dispatch }: TodoFormProps) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    dispatch({ type: 'add-todo', payload: { title } })
+    dispatch({ type: 'add-todo', payload: { title: state.title } })
   }
 
   return (
@@ -18,7 +15,7 @@ export default function TodoForm({ title, dispatch }: TodoFormProps) {
         className="bg-white p-2 border border-[#FF3366] w-[487px]"
         type="text"
         placeholder="Buy Milk"
-        value={title}
+        value={state.title}
         onChange={(e) =>
           dispatch({ type: 'set-title', payload: { title: e.target.value } })
         }
