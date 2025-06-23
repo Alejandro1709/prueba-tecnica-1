@@ -10,10 +10,12 @@ export type TodoActions =
     }
   | { type: 'delete-todo'; payload: { id: Todo['id'] } }
   | { type: 'clear-todos' }
+  | { type: 'add-filter'; payload: { filter: string } }
 
 export type TodoState = {
   title: string
   todos: Todo[]
+  filter: string
 }
 
 const todosFromStorage = (): Todo[] => {
@@ -24,6 +26,7 @@ const todosFromStorage = (): Todo[] => {
 export const initialState: TodoState = {
   title: '',
   todos: todosFromStorage(),
+  filter: 'all',
 }
 
 export const todoReducer = (
@@ -91,5 +94,13 @@ export const todoReducer = (
       title: '',
     }
   }
+
+  if (action.type === 'add-filter') {
+    return {
+      ...state,
+      filter: action.payload.filter,
+    }
+  }
+
   return state
 }
